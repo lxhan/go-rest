@@ -2,7 +2,7 @@ package main
 
 import (
 	"go-rest/internal/user"
-	"log"
+	"go-rest/pkg/log"
 	"net"
 	"net/http"
 	"time"
@@ -11,15 +11,19 @@ import (
 )
 
 func main() {
+	logger := log.GetLogger()
+	logger.Info("initialized router")
 	router := httprouter.New()
 
-	handler := user.NewHandler()
+	logger.Info("register user handler")
+	handler := user.NewHandler(*logger)
 	handler.Register(router)
 
 	startServer(router)
 }
 
 func startServer(router *httprouter.Router) {
+	logger := log.GetLogger()
 	listener, err := net.Listen("tcp", ":8888")
 	if err != nil {
 		panic(err)
@@ -31,6 +35,7 @@ func startServer(router *httprouter.Router) {
 		ReadTimeout:  30 * time.Second,
 	}
 
-	server.Serve(listener)
-	log.Println("Server is listening")
+	logger.Info("listening on port 8888")
+
+	logger.Fatal(server.Serve(listener))
 }

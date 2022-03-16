@@ -2,16 +2,20 @@ package user
 
 import (
 	"go-rest/internal/handlers"
+	"go-rest/pkg/log"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
 )
 
 type handler struct {
+	logger log.Logger
 }
 
-func NewHandler() handlers.Handler {
-	return &handler{}
+func NewHandler(logger log.Logger) handlers.Handler {
+	return &handler{
+		logger: logger,
+	}
 }
 func (h *handler) Register(router *httprouter.Router) {
 	router.GET("/api/users", h.GetUsers)
