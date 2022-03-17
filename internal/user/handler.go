@@ -9,10 +9,10 @@ import (
 )
 
 type handler struct {
-	logger log.Logger
+	logger *log.Logger
 }
 
-func NewHandler(logger log.Logger) handlers.Handler {
+func NewHandler(logger *log.Logger) handlers.Handler {
 	return &handler{
 		logger: logger,
 	}
