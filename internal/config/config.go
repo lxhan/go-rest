@@ -1,7 +1,7 @@
 package config
 
 import (
-	"go-rest/pkg/log"
+	"go-rest/pkg/logger"
 	"sync"
 
 	"github.com/ilyakaznacheev/cleanenv"
@@ -18,11 +18,11 @@ var once sync.Once
 
 func GetConfig() *Config {
 	once.Do(func() {
-		logger := log.GetLogger()
-		logger.Info("reading config")
+		log := logger.GetLogger()
+		log.Info("reading config")
 		conf = &Config{}
 		if err := cleanenv.ReadEnv(conf); err != nil {
-			logger.Fatal(err)
+			log.Fatal(err)
 		}
 	})
 	return conf

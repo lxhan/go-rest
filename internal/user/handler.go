@@ -2,19 +2,19 @@ package user
 
 import (
 	"go-rest/internal/handlers"
-	"go-rest/pkg/log"
+	"go-rest/pkg/logger"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
 )
 
 type handler struct {
-	logger *log.Logger
+	log *logger.Logger
 }
 
-func NewHandler(logger *log.Logger) handlers.Handler {
+func NewHandler(log *logger.Logger) handlers.Handler {
 	return &handler{
-		logger: logger,
+		log: log,
 	}
 }
 func (h *handler) Register(router *httprouter.Router) {

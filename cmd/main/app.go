@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"go-rest/internal/config"
 	"go-rest/internal/user"
-	"go-rest/pkg/log"
+	"go-rest/pkg/logger"
 	"net"
 	"net/http"
 	"time"
@@ -13,20 +13,20 @@ import (
 )
 
 func main() {
-	logger := log.GetLogger()
-	logger.Info("initialized router")
+	log := logger.GetLogger()
+	log.Info("initialized router")
 	router := httprouter.New()
 	conf := config.GetConfig()
 
-	logger.Info("register user handler")
-	handler := user.NewHandler(logger)
+	log.Info("register user handler")
+	handler := user.NewHandler(log)
 	handler.Register(router)
 
 	startServer(router, conf)
 }
 
 func startServer(router *httprouter.Router, conf *config.Config) {
-	logger := log.GetLogger()
+	log := logger.GetLogger()
 
 	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%s", conf.Host, conf.Port))
 	if err != nil {
@@ -39,7 +39,7 @@ func startServer(router *httprouter.Router, conf *config.Config) {
 		ReadTimeout:  30 * time.Second,
 	}
 
-	logger.Infof("listening on port %s", conf.Port)
+	log.Infof("listening on port %s", conf.Port)
 
-	logger.Fatal(server.Serve(listener))
+	log.Fatal(server.Serve(listener))
 }
